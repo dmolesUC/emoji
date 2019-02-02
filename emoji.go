@@ -1,0 +1,5 @@
+package emoji
+
+func init() {
+
+}

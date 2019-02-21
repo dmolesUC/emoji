@@ -22,6 +22,9 @@ var cpSingleRe = regexp.MustCompile(cpSingle)
 var cpSequenceRe = regexp.MustCompile(cpSequence)
 var cpRangeRe = regexp.MustCompile(cpRange)
 
+// TODO: parse bindata bytes, not strings
+// TODO: parse to unicode.RangeTable, not strings
+
 func parseFile(path string) (results []string, err error) {
 	in, err := os.Open(path)
 	if err != nil {

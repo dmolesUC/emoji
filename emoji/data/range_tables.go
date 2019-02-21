@@ -17,10 +17,14 @@ const (
 	cp       = "1?[0-9A-F]{4}"
 	cpSingle = "^(" + cp + ")"
 	cpRange  = "^(" + cp + ")[.]{2}(" + cp + ")"
+
+	emojiProp = "\\s+;\\s+Emoji\\s+"
+	emojiSingle = cpSingle + emojiProp
+	emojiRange = cpRange + emojiProp
 )
 
-var cpSingleRe = regexp.MustCompile(cpSingle)
-var cpRangeRe = regexp.MustCompile(cpRange)
+var emojiSingleRe = regexp.MustCompile(emojiSingle)
+var emojiRangeRe = regexp.MustCompile(emojiRange)
 
 func parseRangeTable(data []byte) *unicode.RangeTable {
 	var r16s []unicode.Range16
@@ -64,12 +68,12 @@ func parseRangeTable(data []byte) *unicode.RangeTable {
 }
 
 func toRange(line string) (start, end string, ok bool) {
-	rangeMatch := cpRangeRe.FindStringSubmatch(line)
+	rangeMatch := emojiRangeRe.FindStringSubmatch(line)
 	if len(rangeMatch) > 1 {
 		start = rangeMatch[1]
 		end = rangeMatch[2]
 		return start, end, true
-	} else if singleMatch := cpSingleRe.FindStringSubmatch(line); len(singleMatch) > 1 {
+	} else if singleMatch := emojiSingleRe.FindStringSubmatch(line); len(singleMatch) > 1 {
 		start = singleMatch[1]
 		end = singleMatch[1]
 		return start, end, true

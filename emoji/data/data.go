@@ -4,45 +4,52 @@
 
 package data
 
+func mustRead(data []byte, err error) []byte {
+	if err != nil {
+		panic(err)
+	}
+	return data
+} 
+
 var sourceByVersionAndType = map[Version]map[SourceType][]byte {
 	V1: {
-		Data: __10EmojiDataTxt,
+		Data: mustRead(_10EmojiDataTxtBytes()),
 	},
 	V2: {
-		Data: __20EmojiDataTxt,
-		Sequences: __20EmojiSequencesTxt,
-		ZWJSequences: __20EmojiZwjSequencesTxt,
+		Data: mustRead(_20EmojiDataTxtBytes()),
+		Sequences: mustRead(_20EmojiSequencesTxtBytes()),
+		ZWJSequences: mustRead(_20EmojiZwjSequencesTxtBytes()),
 	},
 	V3: {
-		Data: __30EmojiDataTxt,
-		Sequences: __30EmojiSequencesTxt,
-		ZWJSequences: __30EmojiSequencesTxt,
+		Data: mustRead(_30EmojiDataTxtBytes()),
+		Sequences: mustRead(_30EmojiSequencesTxtBytes()),
+		ZWJSequences: mustRead(_30EmojiSequencesTxtBytes()),
 	},
 	V4: {
-		Data: __40EmojiDataTxt,
-		Sequences: __40EmojiSequencesTxt,
-		Test: __40EmojiTestTxt,
-		ZWJSequences: __40EmojiSequencesTxt,
+		Data: mustRead(_40EmojiDataTxtBytes()),
+		Sequences: mustRead(_40EmojiSequencesTxtBytes()),
+		Test: mustRead(_40EmojiTestTxtBytes()),
+		ZWJSequences: mustRead(_40EmojiSequencesTxtBytes()),
 	},
 	V5: {
-		Data: __50EmojiDataTxt,
-		Sequences: __50EmojiSequencesTxt,
-		Test: __50EmojiTestTxt,
-		VariationSequences: __50EmojiVariationSequencesTxt,
-		ZWJSequences: __50EmojiVariationSequencesTxt,
+		Data: mustRead(_50EmojiDataTxtBytes()),
+		Sequences: mustRead(_50EmojiSequencesTxtBytes()),
+		Test: mustRead(_50EmojiTestTxtBytes()),
+		VariationSequences: mustRead(_50EmojiVariationSequencesTxtBytes()),
+		ZWJSequences: mustRead(_50EmojiVariationSequencesTxtBytes()),
 	},
 	V11: {
-		Data: __110EmojiDataTxt,
-		Sequences: __110EmojiSequencesTxt,
-		Test: __110EmojiTestTxt,
-		VariationSequences: __110EmojiVariationSequencesTxt,
-		ZWJSequences: __110EmojiVariationSequencesTxt,
+		Data: mustRead(_110EmojiDataTxtBytes()),
+		Sequences: mustRead(_110EmojiSequencesTxtBytes()),
+		Test: mustRead(_110EmojiTestTxtBytes()),
+		VariationSequences: mustRead(_110EmojiVariationSequencesTxtBytes()),
+		ZWJSequences: mustRead(_110EmojiVariationSequencesTxtBytes()),
 	},
 	V12: {
-		Data: __120EmojiDataTxt,
-		Sequences: __120EmojiSequencesTxt,
-		Test: __120EmojiTestTxt,
-		VariationSequences: __120EmojiVariationSequencesTxt,
-		ZWJSequences: __120EmojiVariationSequencesTxt,
+		Data: mustRead(_120EmojiDataTxtBytes()),
+		Sequences: mustRead(_120EmojiSequencesTxtBytes()),
+		Test: mustRead(_120EmojiTestTxtBytes()),
+		VariationSequences: mustRead(_120EmojiVariationSequencesTxtBytes()),
+		ZWJSequences: mustRead(_120EmojiVariationSequencesTxtBytes()),
 	},
 }

@@ -36,6 +36,7 @@ func parseRangeTable(data []byte) *unicode.RangeTable {
 		if !ok {
 			continue
 		}
+		//fmt.Printf("parsed: %v..%v\n", start, end)
 		r16, err := parseRange16(start, end)
 		if err == nil {
 			r16s = append(r16s, *r16)

@@ -4,6 +4,7 @@
 
 package data
 
+// TODO: just generate it uncompressed
 func mustRead(data []byte, err error) []byte {
 	if err != nil {
 		panic(err)

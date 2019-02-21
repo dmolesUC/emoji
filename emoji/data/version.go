@@ -1,5 +1,9 @@
 package data
 
+import (
+	"unicode"
+)
+
 type Version int
 
 const (
@@ -26,4 +30,15 @@ func (v Version) Source(t SourceType) []byte {
 		}
 	}
 	return nil
+}
+
+func (v Version) RangeTable() *unicode.RangeTable {
+	if !v.HasData(Data) {
+		return nil
+	}
+	if rt, ok := rangeTables[v]; ok {
+		return rt
+	}
+	rangeTables[v] = parseRangeTable(v.Source(Data))
+	return rangeTables[v]
 }

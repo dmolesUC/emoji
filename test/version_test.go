@@ -1,16 +1,18 @@
 package test
 
 import (
-	. "github.com/dmolesUC3/emoji/pkg"
-	. "github.com/dmolesUC3/emoji/pkg/properties"
+	. "github.com/dmolesUC3/emoji"
 	. "gopkg.in/check.v1"
 	"unicode"
 )
 
-type DataSuite struct {
+// ------------------------------------------------------------
+// Fixture
+
+type VersionSuite struct {
 }
 
-var _ = Suite(&DataSuite{})
+var _ = Suite(&VersionSuite{})
 
 // Sample of emoji newly introduced by version
 var samplesByPropertyAndVersion = map[Property]map[Version]string{
@@ -38,7 +40,10 @@ func combinedSample(prop Property, v Version) string {
 	return sample
 }
 
-func (s *DataSuite) TestRangeTables(c *C) {
+// ------------------------------------------------------------
+// Tests
+
+func (s *VersionSuite) TestRangeTables(c *C) {
 	ok := true
 	for prop := range samplesByPropertyAndVersion {
 		for _, v := range AllVersions {

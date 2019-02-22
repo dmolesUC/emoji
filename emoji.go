@@ -1,12 +1,13 @@
 package emoji
 
 import (
-	. "github.com/dmolesUC3/emoji/pkg/data"
-	. "github.com/dmolesUC3/emoji/pkg/properties"
+	. "github.com/dmolesUC3/emoji/internal/data"
 	"unicode"
 )
 
-// Version represents an Emoji major release, e.g. V5 for Emoji version 5.0
+// Version represents an Emoji major release, e.g. V5 for Emoji version 5.0.
+// Note that starting at Emoji version 11.0, the Emoji version is synchronized
+// to the corresponding Unicode version, so there are no versions 6-10.
 type Version int
 
 const (
@@ -22,7 +23,7 @@ const (
 	Latest = V12
 )
 
-// AllVersions lists all versions in order
+// AllVersions lists all emoji versions in order
 var AllVersions = []Version{V1, V2, V3, V4, V5, V11, V12}
 
 // HasFile returns true if this version has a file of the specified type, false
@@ -30,17 +31,16 @@ var AllVersions = []Version{V1, V2, V3, V4, V5, V11, V12}
 // Emoji version 2.0, test files in version 4.0, and variation sequences in version
 // 5.0.
 func (v Version) HasFile(t FileType) bool {
-	return v.FileBytes(t) != nil
+	return t.HasData(int(v))
 }
 
 // FileBytes returns the byte data of the Unicode.org source file of the specified type
 // for this version, e.g. V12.FileBytes(Sequences) returns the contents of the file
 // http://unicode.org/Public/emoji/12.0/emoji-sequences.txt
 func (v Version) FileBytes(t FileType) []byte {
-	if fileBytesByVersion, ok := fileBytesByVersionAndType[v]; ok {
-		if bytes, ok := fileBytesByVersion[t]; ok {
-			return bytes
-		}
+	bytes, err := t.GetBytes(int(v))
+	if err == nil {
+		return bytes
 	}
 	return nil
 }

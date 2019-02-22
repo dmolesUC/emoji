@@ -1,21 +1,14 @@
-package data
+package emoji
 
 import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/dmolesUC3/emoji/pkg/properties"
 	"math"
 	"regexp"
 	"strconv"
 	"strings"
 	"unicode"
-)
-
-const (
-	cp            = "1?[0-9A-F]{4}"
-	singlePattern = "^(" + cp + ")"
-	rangePattern  = "^(" + cp + ")[.]{2}(" + cp + ")"
 )
 
 // ParseRangeTable parses the specified Unicode.org data file for characters with the
@@ -24,7 +17,7 @@ const (
 // Note that the range table reflects the ranges as defined in the source files; ranges
 // are guaranteed not to overlap, as per the RangeTable docs, but adjacent ranges are not
 // coalesced.
-func ParseRangeTable(property properties.Property, data []byte) *unicode.RangeTable {
+func ParseRangeTable(property Property, data []byte) *unicode.RangeTable {
 	propRegexp := hasPropertyRegexp(property)
 
 	var r16s []unicode.Range16
@@ -70,6 +63,15 @@ func ParseRangeTable(property properties.Property, data []byte) *unicode.RangeTa
 	return &rt
 }
 
+const (
+	cp            = "1?[0-9A-F]{4}"
+	singlePattern = "^(" + cp + ")"
+	rangePattern  = "^(" + cp + ")[.]{2}(" + cp + ")"
+)
+
+// ------------------------------------------------------------
+// Unexported symbols
+
 var regexpCache = map[string]*regexp.Regexp{}
 
 func getRegexp(regexpStr string) *regexp.Regexp {
@@ -81,7 +83,7 @@ func getRegexp(regexpStr string) *regexp.Regexp {
 	return re
 }
 
-func hasPropertyRegexp(property properties.Property) *regexp.Regexp {
+func hasPropertyRegexp(property Property) *regexp.Regexp {
 	regexpStr := fmt.Sprintf(";\\s+%v\\s*#", property)
 	return getRegexp(regexpStr)
 }

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/dmolesUC3/emoji/pkg/properties"
 	"math"
 	"regexp"
 	"strconv"
@@ -31,11 +32,12 @@ func getRegexp(regexpStr string) *regexp.Regexp {
 	return re
 }
 
-func hasPropertyRegexp(property string) *regexp.Regexp {
-	return getRegexp(";\\s+" + property + "\\s*#")
+func hasPropertyRegexp(property properties.Property) *regexp.Regexp {
+	regexpStr := fmt.Sprintf(";\\s+%v\\s*#", property)
+	return getRegexp(regexpStr)
 }
 
-func ParseRangeTable(property string, data []byte) *unicode.RangeTable {
+func ParseRangeTable(property properties.Property, data []byte) *unicode.RangeTable {
 	propRegexp := hasPropertyRegexp(property)
 
 	var r16s []unicode.Range16

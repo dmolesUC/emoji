@@ -4,6 +4,8 @@
 
 package emoji
 
+import . "github.com/dmolesUC3/emoji/pkg/data"
+
 // TODO: just generate it uncompressed
 func mustRead(data []byte, err error) []byte {
 	if err != nil {
@@ -12,45 +14,45 @@ func mustRead(data []byte, err error) []byte {
 	return data
 } 
 
-var sourceByVersionAndType = map[Version]map[SourceType][]byte {
+var dataByVersionAndType = map[Version]map[DataType][]byte {
 	V1: {
 		Data: mustRead(_10EmojiDataTxtBytes()),
 	},
 	V2: {
-		Data: mustRead(_20EmojiDataTxtBytes()),
-		Sequences: mustRead(_20EmojiSequencesTxtBytes()),
+		Data:         mustRead(_20EmojiDataTxtBytes()),
+		Sequences:    mustRead(_20EmojiSequencesTxtBytes()),
 		ZWJSequences: mustRead(_20EmojiZwjSequencesTxtBytes()),
 	},
 	V3: {
-		Data: mustRead(_30EmojiDataTxtBytes()),
-		Sequences: mustRead(_30EmojiSequencesTxtBytes()),
+		Data:         mustRead(_30EmojiDataTxtBytes()),
+		Sequences:    mustRead(_30EmojiSequencesTxtBytes()),
 		ZWJSequences: mustRead(_30EmojiSequencesTxtBytes()),
 	},
 	V4: {
-		Data: mustRead(_40EmojiDataTxtBytes()),
-		Sequences: mustRead(_40EmojiSequencesTxtBytes()),
-		Test: mustRead(_40EmojiTestTxtBytes()),
+		Data:         mustRead(_40EmojiDataTxtBytes()),
+		Sequences:    mustRead(_40EmojiSequencesTxtBytes()),
+		Test:         mustRead(_40EmojiTestTxtBytes()),
 		ZWJSequences: mustRead(_40EmojiSequencesTxtBytes()),
 	},
 	V5: {
-		Data: mustRead(_50EmojiDataTxtBytes()),
-		Sequences: mustRead(_50EmojiSequencesTxtBytes()),
-		Test: mustRead(_50EmojiTestTxtBytes()),
+		Data:               mustRead(_50EmojiDataTxtBytes()),
+		Sequences:          mustRead(_50EmojiSequencesTxtBytes()),
+		Test:               mustRead(_50EmojiTestTxtBytes()),
 		VariationSequences: mustRead(_50EmojiVariationSequencesTxtBytes()),
-		ZWJSequences: mustRead(_50EmojiVariationSequencesTxtBytes()),
+		ZWJSequences:       mustRead(_50EmojiVariationSequencesTxtBytes()),
 	},
 	V11: {
-		Data: mustRead(_110EmojiDataTxtBytes()),
-		Sequences: mustRead(_110EmojiSequencesTxtBytes()),
-		Test: mustRead(_110EmojiTestTxtBytes()),
+		Data:               mustRead(_110EmojiDataTxtBytes()),
+		Sequences:          mustRead(_110EmojiSequencesTxtBytes()),
+		Test:               mustRead(_110EmojiTestTxtBytes()),
 		VariationSequences: mustRead(_110EmojiVariationSequencesTxtBytes()),
-		ZWJSequences: mustRead(_110EmojiVariationSequencesTxtBytes()),
+		ZWJSequences:       mustRead(_110EmojiVariationSequencesTxtBytes()),
 	},
 	V12: {
-		Data: mustRead(_120EmojiDataTxtBytes()),
-		Sequences: mustRead(_120EmojiSequencesTxtBytes()),
-		Test: mustRead(_120EmojiTestTxtBytes()),
+		Data:               mustRead(_120EmojiDataTxtBytes()),
+		Sequences:          mustRead(_120EmojiSequencesTxtBytes()),
+		Test:               mustRead(_120EmojiTestTxtBytes()),
 		VariationSequences: mustRead(_120EmojiVariationSequencesTxtBytes()),
-		ZWJSequences: mustRead(_120EmojiVariationSequencesTxtBytes()),
+		ZWJSequences:       mustRead(_120EmojiVariationSequencesTxtBytes()),
 	},
 }

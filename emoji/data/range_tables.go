@@ -99,7 +99,7 @@ func parseRange16(startStr, endStr string) (*unicode.Range16, error) {
 }
 
 func parse16(str string) (*uint16, error) {
-	val, err := strconv.ParseInt(str, 16, 64)
+	val, err := strconv.ParseInt(str, 16, 16)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func parseRange32(startStr, endStr string) (*unicode.Range32, error) {
 }
 
 func parse32(str string) (*uint32, error) {
-	val, err := strconv.ParseInt(str, 32, 64)
+	val, err := strconv.ParseInt(str, 16, 32)
 	if err != nil {
 		return nil, err
 	}

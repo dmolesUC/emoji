@@ -16,9 +16,6 @@ func (s *DataSuite) TestEmojiRangeTable(c *C) {
 	rt := data.Latest.EmojiRangeTable()
 	c.Assert(rt, NotNil)
 
-	// TODO: don't parse repeats
-	//  - figure out what we want to parse:
-	//    - only Emoji?
 	c.Assert(rt.LatinOffset, Equals, 5)
 
 	samples := []string {

@@ -32,7 +32,7 @@ func (v Version) Source(t SourceType) []byte {
 	return nil
 }
 
-func (v Version) RangeTable() *unicode.RangeTable {
+func (v Version) EmojiRangeTable() *unicode.RangeTable {
 	if !v.HasData(Data) {
 		return nil
 	}

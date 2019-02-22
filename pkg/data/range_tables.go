@@ -1,4 +1,4 @@
-package emoji
+package data
 
 import (
 	"bufio"
@@ -12,31 +12,18 @@ import (
 	"unicode"
 )
 
-// TODO: map by property
-var emojiRangeTables = map[Version]*unicode.RangeTable{}
-
 const (
 	cp            = "1?[0-9A-F]{4}"
 	singlePattern = "^(" + cp + ")"
 	rangePattern  = "^(" + cp + ")[.]{2}(" + cp + ")"
 )
 
-var regexpCache = map[string]*regexp.Regexp{}
-
-func getRegexp(regexpStr string) *regexp.Regexp {
-	if re, ok := regexpCache[regexpStr]; ok {
-		return re
-	}
-	re := regexp.MustCompile(regexpStr)
-	regexpCache[regexpStr] = re
-	return re
-}
-
-func hasPropertyRegexp(property properties.Property) *regexp.Regexp {
-	regexpStr := fmt.Sprintf(";\\s+%v\\s*#", property)
-	return getRegexp(regexpStr)
-}
-
+// ParseRangeTable parses the specified Unicode.org data file for characters with the
+// specified property, and returns a range table of those characters.
+//
+// Note that the range table reflects the ranges as defined in the source files; ranges
+// are guaranteed not to overlap, as per the RangeTable docs, but adjacent ranges are not
+// coalesced.
 func ParseRangeTable(property properties.Property, data []byte) *unicode.RangeTable {
 	propRegexp := hasPropertyRegexp(property)
 
@@ -81,6 +68,22 @@ func ParseRangeTable(property properties.Property, data []byte) *unicode.RangeTa
 		LatinOffset: latinOffset,
 	}
 	return &rt
+}
+
+var regexpCache = map[string]*regexp.Regexp{}
+
+func getRegexp(regexpStr string) *regexp.Regexp {
+	if re, ok := regexpCache[regexpStr]; ok {
+		return re
+	}
+	re := regexp.MustCompile(regexpStr)
+	regexpCache[regexpStr] = re
+	return re
+}
+
+func hasPropertyRegexp(property properties.Property) *regexp.Regexp {
+	regexpStr := fmt.Sprintf(";\\s+%v\\s*#", property)
+	return getRegexp(regexpStr)
 }
 
 func toRange(line string) (start, end string, ok bool) {

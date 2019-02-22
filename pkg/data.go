@@ -14,7 +14,7 @@ func mustRead(data []byte, err error) []byte {
 	return data
 } 
 
-var dataByVersionAndType = map[Version]map[DataType][]byte {
+var fileBytesByVersionAndType = map[Version]map[FileType][]byte {
 	V1: {
 		Data: mustRead(_10EmojiDataTxtBytes()),
 	},

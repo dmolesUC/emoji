@@ -13,15 +13,15 @@ type DataSuite struct {
 var _ = Suite(&DataSuite{})
 
 // Sample of emoji newly introduced by version
-var samplesByPropertyAndVersion = map[Property]map[Version]string {
+var samplesByPropertyAndVersion = map[Property]map[Version]string{
 	Emoji: {
-		V1:  "😀😃😄", // 1F600,1F603,1F604,
-		V2:  "🗨",     // 1F5E8,
-		V3:  "🤣🤥🤤", // 1F923,1F925,1F924,
-		V4:  "♀♂⚕",    // 2640,2642,2695,
-		V5:  "🤩🤪🤭", // 1F929,1F92A,1F92D,
-		V11: "🥰🥵🥶", // 1F970,1F975,1F976,
-		V12: "🥱🤎🤍", // 1F971,1F90E,1F90D,
+		V1:  "😀😃😄",	// 1F600, 1F603, 1F604
+		V2:  "🗨",		// 1F5E8
+		V3:  "🤣🤥🤤",	// 1F923, 1F925, 1F924
+		V4:  "♀♂⚕",	// 2640, 2642, 2695
+		V5:  "🤩🤪🤭",	// 1F929, 1F92A, 1F92D
+		V11: "🥰🥵🥶",	// 1F970, 1F975, 1F976
+		V12: "🥱🤎🤍",	// 1F971, 1F90E, 1F90D
 	},
 }
 

@@ -1,13 +1,13 @@
 package data
 
-type DataType int
+type FileType int
 
 const (
-	Data DataType = iota
+	Data FileType = iota
 	Sequences
 	Test
 	VariationSequences
 	ZWJSequences
 )
 
-var AllDataTypes = []DataType{Data, Sequences, Test, VariationSequences, ZWJSequences}
+var AllDataTypes = []FileType{Data, Sequences, Test, VariationSequences, ZWJSequences}

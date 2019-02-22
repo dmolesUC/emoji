@@ -11,22 +11,33 @@ import (
 	"unicode"
 )
 
-var rangeTables = map[Version]*unicode.RangeTable{}
+// TODO: map by property
+var emojiRangeTables = map[Version]*unicode.RangeTable{}
 
 const (
-	cp       = "1?[0-9A-F]{4}"
-	cpSingle = "^(" + cp + ")"
-	cpRange  = "^(" + cp + ")[.]{2}(" + cp + ")"
-
-	emojiProp = "\\s+;\\s+Emoji\\s+"
-	emojiSingle = cpSingle + emojiProp
-	emojiRange = cpRange + emojiProp
+	cp            = "1?[0-9A-F]{4}"
+	singlePattern = "^(" + cp + ")"
+	rangePattern  = "^(" + cp + ")[.]{2}(" + cp + ")"
 )
 
-var emojiSingleRe = regexp.MustCompile(emojiSingle)
-var emojiRangeRe = regexp.MustCompile(emojiRange)
+var regexpCache = map[string]*regexp.Regexp{}
 
-func parseRangeTable(data []byte) *unicode.RangeTable {
+func getRegexp(regexpStr string) *regexp.Regexp {
+	if re, ok := regexpCache[regexpStr]; ok {
+		return re
+	}
+	re := regexp.MustCompile(regexpStr)
+	regexpCache[regexpStr] = re
+	return re
+}
+
+func hasPropertyRegexp(property string) *regexp.Regexp {
+	return getRegexp(";\\s+" + property + "\\s*#")
+}
+
+func ParseRangeTable(property string, data []byte) *unicode.RangeTable {
+	propRegexp := hasPropertyRegexp(property)
+
 	var r16s []unicode.Range16
 	var r32s []unicode.Range32
 
@@ -34,6 +45,9 @@ func parseRangeTable(data []byte) *unicode.RangeTable {
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.HasPrefix(line, "#") || strings.TrimSpace(line) == "" {
+			continue
+		}
+		if !propRegexp.MatchString(line) {
 			continue
 		}
 		start, end, ok := toRange(line)
@@ -68,15 +82,17 @@ func parseRangeTable(data []byte) *unicode.RangeTable {
 }
 
 func toRange(line string) (start, end string, ok bool) {
-	rangeMatch := emojiRangeRe.FindStringSubmatch(line)
+	rangeMatch := getRegexp(rangePattern).FindStringSubmatch(line)
 	if len(rangeMatch) > 1 {
 		start = rangeMatch[1]
 		end = rangeMatch[2]
 		return start, end, true
-	} else if singleMatch := emojiSingleRe.FindStringSubmatch(line); len(singleMatch) > 1 {
-		start = singleMatch[1]
-		end = singleMatch[1]
-		return start, end, true
+	} else {
+		if singleMatch := getRegexp(singlePattern).FindStringSubmatch(line); len(singleMatch) > 1 {
+			start = singleMatch[1]
+			end = singleMatch[1]
+			return start, end, true
+		}
 	}
 	return "", "", false
 }

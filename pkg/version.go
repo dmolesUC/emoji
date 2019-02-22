@@ -1,6 +1,7 @@
 package emoji
 
 import (
+	"github.com/dmolesUC3/emoji/pkg/properties"
 	"unicode"
 )
 
@@ -36,9 +37,9 @@ func (v Version) EmojiRangeTable() *unicode.RangeTable {
 	if !v.HasData(Data) {
 		return nil
 	}
-	if rt, ok := rangeTables[v]; ok {
+	if rt, ok := emojiRangeTables[v]; ok {
 		return rt
 	}
-	rangeTables[v] = parseRangeTable(v.Source(Data))
-	return rangeTables[v]
+	emojiRangeTables[v] = ParseRangeTable(properties.Emoji, v.Source(Data))
+	return emojiRangeTables[v]
 }

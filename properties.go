@@ -3,7 +3,6 @@ package emoji
 // Property represents a Unicode emoji property
 type Property string
 
-//noinspection GoSnakeCaseUsage,GoNameStartsWithPackageName
 const (
 	Emoji                 Property = "Emoji"
 	Emoji_Presentation    Property = "Emoji_Presentation"
@@ -13,7 +12,6 @@ const (
 )
 
 // AllProperties lists all emoji Unicode properties
-//noinspection GoUnusedGlobalVariable
 var AllProperties = []Property{
 	Emoji,
 	Emoji_Presentation,

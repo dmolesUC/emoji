@@ -1,4 +1,4 @@
-package data
+package emoji
 
 type SourceType int
 

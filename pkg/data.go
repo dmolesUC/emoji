@@ -1,8 +1,8 @@
 //go:generate go get -u -v github.com/go-bindata/go-bindata/...
-//go:generate go-bindata -prefix ../internal/unicode.org/Public/emoji/ -ignore \.*html -ignore ReadMe\.txt -pkg data -o emoji_bindata.go ../internal/unicode.org/Public/emoji/...
+//go:generate go-bindata -prefix internal/unicode.org/Public/emoji/ -ignore \.*html -ignore ReadMe\.txt -pkg emoji -o emoji_bindata.go internal/unicode.org/Public/emoji/...
 // NOTE: installing go-bindata currently requires using `GO111MODULE=off go generate`
 
-package data
+package emoji
 
 // TODO: just generate it uncompressed
 func mustRead(data []byte, err error) []byte {

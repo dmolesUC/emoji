@@ -1,3 +1,8 @@
+#### Custom ignores ####
+
+# github-markdown-preview previews
+*.md.html
+
 #### joe made this: http://goel.io/joe
 
 #### go ####

@@ -1,7 +1,7 @@
 package emoji
 
 import (
-	. "github.com/dmolesUC3/emoji/internal/data"
+	. "github.com/dmolesUC3/emoji/data"
 	"unicode"
 )
 
@@ -23,7 +23,7 @@ const (
 	Latest = V12
 )
 
-// AllVersions lists all emoji versions in order
+// AllVersions lists all emoji versions in order.
 var AllVersions = []Version{V1, V2, V3, V4, V5, V11, V12}
 
 // HasFile returns true if this version has a file of the specified type, false

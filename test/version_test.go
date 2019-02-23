@@ -2,6 +2,7 @@ package test
 
 import (
 	. "github.com/dmolesUC3/emoji"
+	"github.com/dmolesUC3/emoji/data"
 	. "gopkg.in/check.v1"
 	"unicode"
 )
@@ -15,8 +16,8 @@ type VersionSuite struct {
 var _ = Suite(&VersionSuite{})
 
 // Sample of emoji newly introduced by version
-var samplesByPropertyAndVersion = map[Property]map[Version]string{
-	Emoji: {
+var samplesByPropertyAndVersion = map[data.Property]map[Version]string{
+	data.Emoji: {
 		V1:  "😀😃😄",	// 1F600, 1F603, 1F604
 		V2:  "🗨",		// 1F5E8
 		V3:  "🤣🤥🤤",	// 1F923, 1F925, 1F924
@@ -28,7 +29,7 @@ var samplesByPropertyAndVersion = map[Property]map[Version]string{
 }
 
 // Combined sample of specified version and all versions below it
-func combinedSample(prop Property, v Version) string {
+func combinedSample(prop data.Property, v Version) string {
 	samples := samplesByPropertyAndVersion[prop]
 	sample := ""
 	for _, v2 := range AllVersions {

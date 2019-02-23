@@ -1,6 +1,6 @@
-package emoji
+package data
 
-// Property represents a Unicode emoji property
+// Property represents a Unicode emoji property.
 type Property string
 
 const (
@@ -11,7 +11,7 @@ const (
 	Extended_Pictographic Property = "Extended_Pictographic"
 )
 
-// AllProperties lists all emoji Unicode properties
+// AllProperties lists all emoji Unicode properties.
 var AllProperties = []Property{
 	Emoji,
 	Emoji_Presentation,
@@ -20,6 +20,7 @@ var AllProperties = []Property{
 	Extended_Pictographic,
 }
 
+// String returns the property name as a string.
 func (p Property) String() string {
 	return string(p)
 }

@@ -1,4 +1,4 @@
-package emoji
+package data
 
 import (
 	"bufio"

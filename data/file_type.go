@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// FileType represents the type of a Unicode.org data file.
 type FileType int
 
 const (
@@ -14,8 +15,10 @@ const (
 	ZWJSequences
 )
 
+// AllFileTypes lists all file types.
 var AllFileTypes = []FileType{Data, Sequences, Test, VariationSequences, ZWJSequences}
 
+// String returns the file type as a string.
 func (t FileType) String() string {
 	switch t {
 	case Data:
@@ -33,6 +36,7 @@ func (t FileType) String() string {
 	}
 }
 
+// HasData returns true if the specified Emoji major version has data of this type, false otherwise.
 func (t FileType) HasData(v int) bool {
 	if getBytesByType, ok := getBytesByVersionAndType[v]; ok {
 		_, ok = getBytesByType[t]
@@ -41,6 +45,8 @@ func (t FileType) HasData(v int) bool {
 	return false
 }
 
+// HasData returns data of this type for the specified Emoji major version has data of this type,
+// or nil and an error if no such data exists for this version.
 func (t FileType) GetBytes(v int) ([]byte, error) {
 	if getBytesByType, ok := getBytesByVersionAndType[v]; ok {
 		if getBytes, ok := getBytesByType[t]; ok {

@@ -27,7 +27,7 @@ const (
 // AllVersions lists all emoji versions in order.
 var AllVersions = []Version{V1, V2, V3, V4, V5, V11, V12}
 
-
+// String returns this version as a string, e.g. V4.String() -> "Emoji 4.0"
 func (v Version) String() string {
 	return fmt.Sprintf("Emoji %d.0", int(v))
 }

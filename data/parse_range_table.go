@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	"regexp"
 	"strconv"
 	"strings"
 	"unicode"
@@ -36,7 +35,6 @@ func ParseRangeTable(property Property, data []byte) *unicode.RangeTable {
 		if !ok {
 			continue
 		}
-		//fmt.Printf("parsed: %v..%v\n", start, end)
 		r16, err := parseRange16(start, end)
 		if err == nil {
 			r16s = append(r16s, *r16)
@@ -63,39 +61,17 @@ func ParseRangeTable(property Property, data []byte) *unicode.RangeTable {
 	return &rt
 }
 
-const (
-	cp            = "1?[0-9A-F]{4}"
-	singlePattern = "^(" + cp + ")"
-	rangePattern  = "^(" + cp + ")[.]{2}(" + cp + ")"
-)
-
 // ------------------------------------------------------------
 // Unexported symbols
 
-var regexpCache = map[string]*regexp.Regexp{}
-
-func getRegexp(regexpStr string) *regexp.Regexp {
-	if re, ok := regexpCache[regexpStr]; ok {
-		return re
-	}
-	re := regexp.MustCompile(regexpStr)
-	regexpCache[regexpStr] = re
-	return re
-}
-
-func hasPropertyRegexp(property Property) *regexp.Regexp {
-	regexpStr := fmt.Sprintf(";\\s+%v\\s*#", property)
-	return getRegexp(regexpStr)
-}
-
 func toRange(line string) (start, end string, ok bool) {
-	rangeMatch := getRegexp(rangePattern).FindStringSubmatch(line)
+	rangeMatch := RangeRegexp.FindStringSubmatch(line)
 	if len(rangeMatch) > 1 {
 		start = rangeMatch[1]
 		end = rangeMatch[2]
 		return start, end, true
 	} else {
-		if singleMatch := getRegexp(singlePattern).FindStringSubmatch(line); len(singleMatch) > 1 {
+		if singleMatch := SingleRegexp.FindStringSubmatch(line); len(singleMatch) > 1 {
 			start = singleMatch[1]
 			end = singleMatch[1]
 			return start, end, true

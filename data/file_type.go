@@ -4,19 +4,20 @@ import (
 	"fmt"
 )
 
-// FileType represents the type of a Unicode.org data file.
+// FileType represents the type of a Unicode.org data file. Note that the "Test"
+// type is declared as "Test_" to avoid name collisions.
 type FileType int
 
 const (
 	Data FileType = iota
 	Sequences
-	Test
+	Test_
 	VariationSequences
 	ZWJSequences
 )
 
 // AllFileTypes lists all file types.
-var AllFileTypes = []FileType{Data, Sequences, Test, VariationSequences, ZWJSequences}
+var AllFileTypes = []FileType{Data, Sequences, Test_, VariationSequences, ZWJSequences}
 
 // String returns the file type as a string.
 func (t FileType) String() string {
@@ -25,7 +26,7 @@ func (t FileType) String() string {
 		return "Data"
 	case Sequences:
 		return "Sequences"
-	case Test:
+	case Test_:
 		return "Test"
 	case VariationSequences:
 		return "VariationSequences"

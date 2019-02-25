@@ -10,10 +10,10 @@ import (
 // ------------------------------------------------------------
 // Fixture
 
-type VersionSuite struct {
+type RangeTableSuite struct {
 }
 
-var _ = Suite(&VersionSuite{})
+var _ = Suite(&RangeTableSuite{})
 
 // Sample of emoji newly introduced by version
 var samplesByPropertyAndVersion = map[data.Property]map[Version]string{
@@ -29,7 +29,7 @@ var samplesByPropertyAndVersion = map[data.Property]map[Version]string{
 }
 
 // Combined sample of specified version and all versions below it
-func combinedSample(prop data.Property, v Version) string {
+func (s *RangeTableSuite) combinedSample(prop data.Property, v Version) string {
 	samples := samplesByPropertyAndVersion[prop]
 	sample := ""
 	for _, v2 := range AllVersions {
@@ -44,12 +44,12 @@ func combinedSample(prop data.Property, v Version) string {
 // ------------------------------------------------------------
 // Tests
 
-func (s *VersionSuite) TestRangeTables(c *C) {
+func (s *RangeTableSuite) TestRangeTables(c *C) {
 	ok := true
-	for prop := range samplesByPropertyAndVersion {
+	for _, prop := range data.AllProperties {
 		for _, v := range AllVersions {
 			rt := v.RangeTable(prop)
-			sample := combinedSample(prop, v)
+			sample := s.combinedSample(prop, v)
 			for _, r := range sample {
 				inRange := unicode.In(r, rt)
 				ok = ok && c.Check(inRange, Equals, true, Commentf("expected %v (%X) to be in %v range for %v, but was not", string(r), prop, v, r))

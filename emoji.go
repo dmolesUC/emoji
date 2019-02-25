@@ -64,7 +64,30 @@ func (v Version) RangeTable(property Property) *unicode.RangeTable {
 	return rt
 }
 
+// Sequences returns the Unicode emoji sequences of the specified type in this Emoji version.
+func (v Version) Sequences(seqType SeqType) []string {
+	// TODO: something sensible for V2 and V1
+	var exists bool
+	var seqsByType map[SeqType][]string
+	if seqsByType, exists = sequences[v]; !exists {
+		seqsByType = map[SeqType][]string{}
+		sequences[v] = seqsByType
+	}
+	var seqs []string
+	if seqs, exists = seqsByType[seqType]; !exists {
+		if seqType == Emoji_ZWJ_Sequence {
+			seqs = ParseSequences(seqType, v.FileBytes(ZWJSequences))
+		} else {
+			seqs = ParseSequences(seqType, v.FileBytes(Sequences))
+		}
+		seqsByType[seqType] = seqs
+	}
+	return seqs
+}
+
 // ------------------------------------------------------------
 // Unexported symbols
 
 var rangeTables = map[Version]map[Property]*unicode.RangeTable{}
+
+var sequences = map[Version]map[SeqType][]string{}

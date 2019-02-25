@@ -11,7 +11,7 @@ const (
 	Extended_Pictographic Property = "Extended_Pictographic"
 )
 
-// AllProperties lists all emoji Unicode properties.
+// AllProperties lists all Unicode emoji properties.
 var AllProperties = []Property{
 	Emoji,
 	Emoji_Presentation,

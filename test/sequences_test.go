@@ -11,7 +11,17 @@ type SequencesSuite struct {
 
 var _ = Suite(&SequencesSuite{})
 
+// TODO: figure out what (if anything) was *added* in each version
 var samplesByVersionAndType = map[Version]map[SeqType]string{
+	V1: {
+		Emoji_Combining_Sequence: "9️⃣",
+		Emoji_Flag_Sequence:      "🇿🇼",
+	},
+	V2: {
+		Emoji_Flag_Sequence:      "🇿🇼",
+		Emoji_Combining_Sequence: "9️⃣",
+		Emoji_Modifier_Sequence:  "🤘🏿",
+	},
 	V3: {
 		Emoji_Flag_Sequence:      "🇿🇼",
 		Emoji_Combining_Sequence: "9️⃣",

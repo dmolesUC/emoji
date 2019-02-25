@@ -16,6 +16,12 @@ var RangeRegexp = getRegexp(rangePattern)
 var SingleRegexp = getRegexp(singlePattern)
 var SeqRegexp = regexp.MustCompile(seqPattern)
 
+var legacySeqTypeRegexps = map[SeqType]*regexp.Regexp {
+	Emoji_Flag_Sequence: regexp.MustCompile("flag for"),
+	Emoji_Combining_Sequence: regexp.MustCompile("keycap"),
+	Emoji_Modifier_Sequence: regexp.MustCompile("type-[0-9]"),
+}
+
 var regexpCache = map[string]*regexp.Regexp{}
 
 func getRegexp(regexpStr string) *regexp.Regexp {
@@ -32,7 +38,12 @@ func hasPropertyRegexp(property Property) *regexp.Regexp {
 	return getRegexp(regexpStr)
 }
 
-func hasTypeRegexp(seqType SeqType) *regexp.Regexp {
+func seqTypeRegexp(seqType SeqType) *regexp.Regexp {
 	regexpStr := fmt.Sprintf(";\\s+%v\\s*[;#]", seqType)
 	return getRegexp(regexpStr)
+}
+
+func legacySeqTypeRegexp(seqType SeqType) (*regexp.Regexp, bool) {
+	re, ok := legacySeqTypeRegexps[seqType]
+	return re, ok
 }

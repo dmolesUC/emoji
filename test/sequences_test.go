@@ -61,19 +61,28 @@ func (s *SequencesSuite) combinedSamples(seqType SeqType, v Version) []string {
 
 func (s *SequencesSuite) TestSequences(c *C) {
 	ok := true
-	for _, t := range AllSeqTypes {
-		for _, v := range AllVersions {
+	types := AllSeqTypes
+	versions := AllVersions
+
+	types = []SeqType{Emoji_ZWJ_Sequence}
+	versions = []Version{V5}
+
+	for _, t := range types {
+		for _, v := range versions {
 			for _, s := range s.combinedSamples(t, v) {
-				found := false
-				for _, seq := range v.Sequences(t) {
-					if s == seq {
-						found = true
-						break
-					}
-				}
-				ok = ok && c.Check(found, Equals, true, Commentf("expected %v sequences for %v to include %#v, but did not", t, v, s))
+				ix := index(v.Sequences(t), s)
+				ok = ok && c.Check(ix, Not(Equals), -1, Commentf("expected %v sequences for %v to include %#v (%X), but did not", t, v, s, []rune(s)))
 			}
 		}
 	}
 	c.Assert(ok, Equals, true)
+}
+
+func index(strings []string, str string) int {
+	for i, s := range strings {
+		if s == str {
+			return i
+		}
+	}
+	return -1
 }

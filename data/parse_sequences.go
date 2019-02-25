@@ -3,6 +3,7 @@ package data
 import (
 	"bufio"
 	"bytes"
+	"strconv"
 	"strings"
 )
 
@@ -54,7 +55,7 @@ func toSeq(line string) (string, bool) {
 	if len(seqMatch) == 1 {
 		seq, err := parseSeq(strings.Split(seqMatch[0], " "))
 		if err != nil {
-			return "" , false
+			return "", false
 		}
 		return seq, true
 	}
@@ -64,11 +65,11 @@ func toSeq(line string) (string, bool) {
 func parseSeq(seq []string) (string, error) {
 	var result []rune
 	for _, s := range seq {
-		val, err := parse32(s)
+		val, err := strconv.ParseInt(s, 16, 64)
 		if err != nil {
-			return "" , err
+			return "", err
 		}
-		result = append(result, rune(*val))
+		result = append(result, rune(val))
 	}
 	return string(result), nil
 }

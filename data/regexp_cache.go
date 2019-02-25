@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	cp            = "1?[0-9A-F]{4}"
+	cp            = "[[:xdigit:]]{4,5}"
 	singlePattern = "^(" + cp + ")"
 	rangePattern  = "^(" + cp + ")[.]{2}(" + cp + ")"
 	seqPattern    = "^" + cp + "(?: " + cp + ")+"
@@ -28,11 +28,11 @@ func getRegexp(regexpStr string) *regexp.Regexp {
 }
 
 func hasPropertyRegexp(property Property) *regexp.Regexp {
-	regexpStr := fmt.Sprintf(";\\s+%v\\s*#", property)
+	regexpStr := fmt.Sprintf(";\\s+%v\\s*[;#]", property)
 	return getRegexp(regexpStr)
 }
 
 func hasTypeRegexp(seqType SeqType) *regexp.Regexp {
-	regexpStr := fmt.Sprintf(";\\s+%v\\s*#", seqType)
+	regexpStr := fmt.Sprintf(";\\s+%v\\s*[;#]", seqType)
 	return getRegexp(regexpStr)
 }

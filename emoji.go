@@ -1,6 +1,7 @@
 package emoji
 
 import (
+	"fmt"
 	. "github.com/dmolesUC3/emoji/data"
 	"unicode"
 )
@@ -25,6 +26,11 @@ const (
 
 // AllVersions lists all emoji versions in order.
 var AllVersions = []Version{V1, V2, V3, V4, V5, V11, V12}
+
+
+func (v Version) String() string {
+	return fmt.Sprintf("Emoji %d.0", int(v))
+}
 
 // HasFile returns true if this version has a file of the specified type, false
 // otherwise. E.g., ZWJ (zero width joiner) sequences were introduced only in

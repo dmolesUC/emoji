@@ -16,33 +16,33 @@ var getBytesByVersionAndType = map[int]map[FileType]func() ([]byte, error){
 	3: {
 		Data:         _30EmojiDataTxtBytes,
 		Sequences:    _30EmojiSequencesTxtBytes,
-		ZWJSequences: _30EmojiSequencesTxtBytes,
+		ZWJSequences: _30EmojiZwjSequencesTxtBytes,
 	},
 	4: {
 		Data:         _40EmojiDataTxtBytes,
 		Sequences:    _40EmojiSequencesTxtBytes,
 		Test_:        _40EmojiTestTxtBytes,
-		ZWJSequences: _40EmojiSequencesTxtBytes,
+		ZWJSequences: _40EmojiZwjSequencesTxtBytes,
 	},
 	5: {
 		Data:               _50EmojiDataTxtBytes,
 		Sequences:          _50EmojiSequencesTxtBytes,
 		Test_:              _50EmojiTestTxtBytes,
 		VariationSequences: _50EmojiVariationSequencesTxtBytes,
-		ZWJSequences:       _50EmojiVariationSequencesTxtBytes,
+		ZWJSequences:       _50EmojiZwjSequencesTxtBytes,
 	},
 	11: {
 		Data:               _110EmojiDataTxtBytes,
 		Sequences:          _110EmojiSequencesTxtBytes,
 		Test_:              _110EmojiTestTxtBytes,
 		VariationSequences: _110EmojiVariationSequencesTxtBytes,
-		ZWJSequences:       _110EmojiVariationSequencesTxtBytes,
+		ZWJSequences:       _110EmojiZwjSequencesTxtBytes,
 	},
 	12: {
 		Data:               _120EmojiDataTxtBytes,
 		Sequences:          _120EmojiSequencesTxtBytes,
 		Test_:              _120EmojiTestTxtBytes,
 		VariationSequences: _120EmojiVariationSequencesTxtBytes,
-		ZWJSequences:       _120EmojiVariationSequencesTxtBytes,
+		ZWJSequences:       _120EmojiZwjSequencesTxtBytes,
 	},
 }

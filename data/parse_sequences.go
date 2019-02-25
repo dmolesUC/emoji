@@ -15,6 +15,10 @@ func ParseSequences(seqType SeqType, data []byte) []string {
 	return ParseSequencesMatching(seqTypeRegexp(seqType), data)
 }
 
+// ParseSequencesLegacy parses emoji sequences for Emoji versions 1.0 and 2.0. Note
+// that in Emoji 1.0, all sequences are in the main data file (filetype Data); for
+// Emoji 2.0, all sequences are in the main sequences file (filetype Sequences), with
+// no subfiles for variation sequences, ZWJ sequences, etc.
 func ParseSequencesLegacy(seqType SeqType, data []byte) []string {
 	if re, ok := legacySeqTypeRegexp(seqType); ok {
 		return ParseSequencesMatching(re, data)
@@ -22,6 +26,8 @@ func ParseSequencesLegacy(seqType SeqType, data []byte) []string {
 	return nil
 }
 
+// ParseSequencesMatching parses emoji sequences from data lines matching
+// the specified regexp.
 func ParseSequencesMatching(re *regexp.Regexp, data []byte) []string {
 	var result []string
 	scanner := bufio.NewScanner(bytes.NewReader(data))
@@ -46,7 +52,7 @@ func toSeq(line string) (string, bool) {
 	if strings.HasPrefix(line, "#") || strings.TrimSpace(line) == "" {
 		return "", false
 	}
-	seqMatch := SeqRegexp.FindStringSubmatch(line)
+	seqMatch := seqRegexp.FindStringSubmatch(line)
 	if len(seqMatch) == 1 {
 		seq, err := parseSeq(strings.Split(seqMatch[0], " "))
 		if err != nil {

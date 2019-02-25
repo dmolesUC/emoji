@@ -12,9 +12,9 @@ const (
 	seqPattern    = "^" + cp + "(?: " + cp + ")+"
 )
 
-var RangeRegexp = getRegexp(rangePattern)
-var SingleRegexp = getRegexp(singlePattern)
-var SeqRegexp = regexp.MustCompile(seqPattern)
+var rangeRegexp = getRegexp(rangePattern)
+var singleRegexp = getRegexp(singlePattern)
+var seqRegexp = regexp.MustCompile(seqPattern)
 
 var legacySeqTypeRegexps = map[SeqType]*regexp.Regexp {
 	Emoji_Flag_Sequence: regexp.MustCompile("flag for"),

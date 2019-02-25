@@ -65,13 +65,13 @@ func ParseRangeTable(property Property, data []byte) *unicode.RangeTable {
 // Unexported symbols
 
 func toRange(line string) (start, end string, ok bool) {
-	rangeMatch := RangeRegexp.FindStringSubmatch(line)
+	rangeMatch := rangeRegexp.FindStringSubmatch(line)
 	if len(rangeMatch) > 1 {
 		start = rangeMatch[1]
 		end = rangeMatch[2]
 		return start, end, true
 	} else {
-		if singleMatch := SingleRegexp.FindStringSubmatch(line); len(singleMatch) > 1 {
+		if singleMatch := singleRegexp.FindStringSubmatch(line); len(singleMatch) > 1 {
 			start = singleMatch[1]
 			end = singleMatch[1]
 			return start, end, true

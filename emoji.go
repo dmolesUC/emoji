@@ -6,8 +6,13 @@ import (
 	"unicode"
 )
 
+// ZWJ is the Unicode zero-width join character
+const ZWJ = '\u200d'
+
 // ------------------------------------------------------------
 // Misc functions
+
+// TODO: convert these to range tables for compatibility w/Unicode package
 
 func IsRegionalIndicator(r rune) bool {
 	return r >= 0x1f1e6 && r <= 0x1f1ff
@@ -17,6 +22,25 @@ func IsEmojiSkinToneModifier(r rune) bool {
 	return r >= 0x1f3fb && r <= 0x1f3ff
 }
 
+func IsTag(r rune) bool {
+	return r >= 0xe0000 && r <= 0xe007f
+}
+
+func IsCombiningDiacritical(r rune) bool {
+	return r >= 0x20d0 && r <= 0x20ff
+}
+
+func IsEmoji(r rune) bool {
+	return unicode.Is(Latest.RangeTable(Emoji), r)
+}
+
+func isZeroWidth(r rune) bool {
+	return r == ZWJ ||
+		unicode.Is(unicode.Variation_Selector, r) ||
+		IsCombiningDiacritical(r) ||
+		IsTag(r)
+}
+
 // DisplayWidth attempts to guess at the display width of a string containing
 // emoji, taking into account variation selectors (0xFE00-0xFE0F), zero-width
 // joins (0x200D), combining diacritical marks (0x20d0-0x20ff), flags,
@@ -24,29 +48,24 @@ func IsEmojiSkinToneModifier(r rune) bool {
 func DisplayWidth(str string) int {
 	width := 0
 	runes := []rune(str)
-	for i, r := range runes {
-		if unicode.Is(unicode.Variation_Selector, r) {
+	for i := 0; i < len(runes); i ++ {
+		r := runes[i]
+		if isZeroWidth(r) {
 			continue
 		}
-		if r >= 0x20d0 && r <= 0x20ff {
-			// Combining Diacritical Marks for Symbols
-			continue
-		}
-		// TODO: generally something smarter to identify sequences
-		if i > 0 && IsRegionalIndicator(r) && IsRegionalIndicator(runes[i - 1]) {
-			// TODO: make sure we don't collapse multiple flags
-			continue
-		}
-		if IsEmojiSkinToneModifier(r) {
-			// TODO: make sure we only do so when part of a sequence
-			continue
-		}
-		if r == '\u200d' && len(runes) > i+1 {
+		if i > 0 && runes[i-1] == ZWJ {
 			// ZWJ effectively "suppresses" the next character
-			width -= 1
-		} else {
-			width += 1
+			continue
 		}
+		if i > 0 && IsRegionalIndicator(r) && IsRegionalIndicator(runes[i-1]) {
+			// only count first flag character in a sequence
+			continue
+		}
+		if i > 0 && IsEmojiSkinToneModifier(r) && IsEmoji(runes[i-1]) {
+			// don't count skin tone modifier when it's modifying something
+			continue
+		}
+		width += 1
 	}
 	return width
 }

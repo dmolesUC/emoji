@@ -12,33 +12,10 @@ const ZWJ = '\u200d'
 // ------------------------------------------------------------
 // Misc functions
 
-// TODO: convert these to range tables for compatibility w/Unicode package
-
-func IsRegionalIndicator(r rune) bool {
-	return r >= 0x1f1e6 && r <= 0x1f1ff
-}
-
-func IsEmojiSkinToneModifier(r rune) bool {
-	return r >= 0x1f3fb && r <= 0x1f3ff
-}
-
-func IsTag(r rune) bool {
-	return r >= 0xe0000 && r <= 0xe007f
-}
-
-func IsCombiningDiacritical(r rune) bool {
-	return r >= 0x20d0 && r <= 0x20ff
-}
-
+// IsEmoji returns true if the specified rune has the (single-character)
+// Emoji property in the latest Emoji version, false otherwise
 func IsEmoji(r rune) bool {
 	return unicode.Is(Latest.RangeTable(Emoji), r)
-}
-
-func isZeroWidth(r rune) bool {
-	return r == ZWJ ||
-		unicode.Is(unicode.Variation_Selector, r) ||
-		IsCombiningDiacritical(r) ||
-		IsTag(r)
 }
 
 // DisplayWidth attempts to guess at the display width of a string containing
@@ -57,11 +34,11 @@ func DisplayWidth(str string) int {
 			// ZWJ effectively "suppresses" the next character
 			continue
 		}
-		if i > 0 && IsRegionalIndicator(r) && IsRegionalIndicator(runes[i-1]) {
+		if i > 0 && isRegionalIndicator(r) && isRegionalIndicator(runes[i-1]) {
 			// only count first flag character in a sequence
 			continue
 		}
-		if i > 0 && IsEmojiSkinToneModifier(r) && IsEmoji(runes[i-1]) {
+		if i > 0 && isSkinToneModifier(r) && IsEmoji(runes[i-1]) {
 			// don't count skin tone modifier when it's modifying something
 			continue
 		}
@@ -175,3 +152,18 @@ func (v Version) Sequences(seqType SeqType) []string {
 var rangeTables = map[Version]map[Property]*unicode.RangeTable{}
 
 var sequences = map[Version]map[SeqType][]string{}
+
+func isRegionalIndicator(r rune) bool {
+	return unicode.Is(RegionalIndicator, r)
+}
+
+func isSkinToneModifier(r rune) bool {
+	return unicode.Is(EmojiSkinToneModifier, r)
+}
+
+func isZeroWidth(r rune) bool {
+	return r == ZWJ ||
+		unicode.Is(unicode.Variation_Selector, r) ||
+		unicode.Is(CombiningDiacritical, r) ||
+		unicode.Is(Tag, r)
+}

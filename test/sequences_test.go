@@ -14,12 +14,12 @@ var _ = Suite(&SequencesSuite{})
 // TODO: figure out what (if anything) was *added* in each version
 var samplesByVersionAndType = map[Version]map[SeqType]string{
 	V1: {
-		Emoji_Combining_Sequence: "9️⃣",
+		Emoji_Combining_Sequence: "9⃣", // note no variation selector
 		Emoji_Flag_Sequence:      "🇿🇼",
 	},
 	V2: {
 		Emoji_Flag_Sequence:      "🇿🇼",
-		Emoji_Combining_Sequence: "9️⃣",
+		Emoji_Combining_Sequence: "9⃣", // note no variation selector
 		Emoji_Modifier_Sequence:  "🤘🏿",
 	},
 	V3: {
@@ -69,19 +69,40 @@ func (s *SequencesSuite) combinedSamples(seqType SeqType, v Version) []string {
 	return combined
 }
 
-func (s *SequencesSuite) TestSequences(c *C) {
+func (s *SequencesSuite) TestLegacySequences(c *C) {
 	ok := true
-	types := AllSeqTypes
-	versions := AllVersions
-
-	types = []SeqType{Emoji_ZWJ_Sequence}
-	versions = []Version{V5}
-
-	for _, t := range types {
-		for _, v := range versions {
+	for _, t := range AllSeqTypes {
+		for _, v := range []Version{V1, V2} {
 			for _, s := range s.combinedSamples(t, v) {
 				ix := index(v.Sequences(t), s)
 				ok = ok && c.Check(ix, Not(Equals), -1, Commentf("expected %v sequences for %v to include %#v (%X), but did not", t, v, s, []rune(s)))
+			}
+		}
+	}
+	c.Assert(ok, Equals, true)
+}
+
+func (s *SequencesSuite) TestSequences(c *C) {
+	ok := true
+	for _, t := range AllSeqTypes {
+		for _, v := range AllVersions {
+			for _, s := range s.combinedSamples(t, v) {
+				ix := index(v.Sequences(t), s)
+				ok = ok && c.Check(ix, Not(Equals), -1, Commentf("expected %v sequences for %v to include %#v (%X), but did not", t, v, s, []rune(s)))
+			}
+		}
+	}
+	c.Assert(ok, Equals, true)
+}
+
+func (s *SequencesSuite) TestDisplayWidth(c *C) {
+	ok := true
+	for _, v := range AllVersions {
+		for _, t := range AllSeqTypes {
+			seqs := v.Sequences(t)
+			for _, s := range seqs {
+				w := DisplayWidth(s)
+				ok = ok && c.Check(w, Equals, 1, Commentf("expected \"%v\" (%#v, %X) in %v (%v) to have length 1, but was %d", s, s, []rune(s), v, t, w))
 			}
 		}
 	}

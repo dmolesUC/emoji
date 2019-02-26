@@ -6,6 +6,54 @@ import (
 	"unicode"
 )
 
+// ------------------------------------------------------------
+// Misc functions
+
+func IsRegionalIndicator(r rune) bool {
+	return r >= 0x1f1e6 && r <= 0x1f1ff
+}
+
+func IsEmojiSkinToneModifier(r rune) bool {
+	return r >= 0x1f3fb && r <= 0x1f3ff
+}
+
+// DisplayWidth attempts to guess at the display width of a string containing
+// emoji, taking into account variation selectors (0xFE00-0xFE0F), zero-width
+// joins (0x200D), combining diacritical marks (0x20d0-0x20ff), flags,
+// and skin tone modifiers.
+func DisplayWidth(str string) int {
+	width := 0
+	runes := []rune(str)
+	for i, r := range runes {
+		if unicode.Is(unicode.Variation_Selector, r) {
+			continue
+		}
+		if r >= 0x20d0 && r <= 0x20ff {
+			// Combining Diacritical Marks for Symbols
+			continue
+		}
+		// TODO: generally something smarter to identify sequences
+		if i > 0 && IsRegionalIndicator(r) && IsRegionalIndicator(runes[i - 1]) {
+			// TODO: make sure we don't collapse multiple flags
+			continue
+		}
+		if IsEmojiSkinToneModifier(r) {
+			// TODO: make sure we only do so when part of a sequence
+			continue
+		}
+		if r == '\u200d' && len(runes) > i+1 {
+			// ZWJ effectively "suppresses" the next character
+			width -= 1
+		} else {
+			width += 1
+		}
+	}
+	return width
+}
+
+// ------------------------------------------------------------
+// Version type
+
 // Version represents an Emoji major release, e.g. V5 for Emoji version 5.0.
 // Note that starting at Emoji version 11.0, the Emoji version is synchronized
 // to the corresponding Unicode version, so there are no versions 6-10.
@@ -80,15 +128,23 @@ func (v Version) Sequences(seqType SeqType) []string {
 	}
 	var seqs []string
 	if seqs, exists = seqsByType[seqType]; !exists {
-		if v == V1 {
-			seqs = ParseSequencesLegacy(seqType, v.FileBytes(Data))
-		} else if v == V2 {
-			seqs = ParseSequencesLegacy(seqType, v.FileBytes(Sequences))
-		} else if seqType == Emoji_ZWJ_Sequence {
-			seqs = ParseSequences(seqType, v.FileBytes(ZWJSequences))
+		var parseSeq ParseSeq
+		if v == V1 || v == V2 {
+			parseSeq = ParseSequencesLegacy
 		} else {
-			seqs = ParseSequences(seqType, v.FileBytes(Sequences))
+			parseSeq = ParseSequences
 		}
+
+		var fileType FileType
+		if v == V1 {
+			fileType = Data
+		} else if seqType == Emoji_ZWJ_Sequence {
+			fileType = ZWJSequences
+		} else {
+			fileType = Sequences
+		}
+
+		seqs = parseSeq(seqType, v.FileBytes(fileType))
 		seqsByType[seqType] = seqs
 	}
 	return seqs

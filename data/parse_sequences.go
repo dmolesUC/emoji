@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+type ParseSeq func (seqType SeqType, data []byte) []string
+
 // ParseSequences parses emoji sequences of the specified type from the specified data.
 // Note that prior to version 3.0, type information is not included in the sequence data
 // files, and ParseSequencesLegacy should be used (with the appropriate file) instead.

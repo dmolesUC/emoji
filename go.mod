@@ -1,4 +1,4 @@
-module github.com/dmolesUC3/emoji
+module github.com/dmolesUC/emoji
 
 require (
 	github.com/kr/pretty v0.1.0 // indirect

@@ -1,8 +1,8 @@
 package test
 
 import (
-	. "github.com/dmolesUC3/emoji"
-	"github.com/dmolesUC3/emoji/data"
+	. "github.com/dmolesUC/emoji"
+	"github.com/dmolesUC/emoji/data"
 	. "gopkg.in/check.v1"
 	"unicode"
 )

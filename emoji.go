@@ -2,7 +2,7 @@ package emoji
 
 import (
 	"fmt"
-	. "github.com/dmolesUC3/emoji/data"
+	. "github.com/dmolesUC/emoji/data"
 	"unicode"
 )
 

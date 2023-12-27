@@ -46,6 +46,9 @@ func ParseRangeTable(property Property, data []byte) *unicode.RangeTable {
 		}
 	}
 
+	slices.SortFunc(r16s, func(a, b unicode.Range16) int { return int(a.Lo) - int(b.Lo) })
+	slices.SortFunc(r32s, func(a, b unicode.Range32) int { return int(a.Lo) - int(b.Lo) })
+
 	latinOffset := 0
 	for _, r16 := range r16s {
 		if r16.Hi <= unicode.MaxLatin1 {
